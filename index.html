@@ -795,6 +795,11 @@
             background: rgba(255, 255, 255, 0.9);
         }
 
+        input[readonly] {
+            background: rgba(230, 240, 245, 0.5);
+            cursor: default;
+        }
+
         .row {
             display: flex;
             gap: 18px;
@@ -1612,14 +1617,26 @@
     let chartAlumniInstance = null;
     let chartAtasanInstance = null;
 
-    // ====================== DATA PESERTA ======================
-    const DAFTAR_PESERTA = [
-        'Dr. Giyatno, S.IP., M.Si.',
-        'Yayan Muhamad Supyan, AP., S.IP., M.M.',
-        'Heryan Rusyandi, S.Sos., M.M.',
-        'Dase Fadlil Yusdy Mubarak, S.H.',
-        'Eka Permana Oktaviana, S.T., M.A.P.'
-    ];
+    // ====================== DATA PESERTA & JABATAN ======================
+    const DATA_PESERTA = {
+        'Dr. Giyatno, S.IP., M.Si.': {
+            jabatan: 'Kepala Dinas Peternakan dan Perikanan Kabupaten Ciamis'
+        },
+        'Yayan Muhamad Supyan, AP., S.IP., M.M.': {
+            jabatan: 'Kepala Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ciamis'
+        },
+        'Heryan Rusyandi, S.Sos., M.M.': {
+            jabatan: 'Staf Ahli Bidang Perekonomian dan Pembangunan Kabupaten Ciamis'
+        },
+        'Dase Fadlil Yusdy Mubarak, S.H.': {
+            jabatan: 'Staf Ahli Bidang Administrasi dan Sumber Daya Manusia Kabupaten Ciamis'
+        },
+        'Eka Permana Oktaviana, S.T., M.A.P.': {
+            jabatan: 'Kepala Dinas Sosial Kabupaten Ciamis'
+        }
+    };
+
+    const DAFTAR_PESERTA = Object.keys(DATA_PESERTA);
 
     // ====================== DAFTAR KODE PERNYATAAN ======================
     const KODE_PERNYATAAN = [
@@ -1653,6 +1670,27 @@
     function selectRole(jenis) {
         closeModal();
         pilihFormulir(jenis);
+    }
+
+    // ====================== FUNGSI AUTO FILL JABATAN ======================
+    function fillJabatanAlumni() {
+        const nama = document.getElementById('namaAlumni')?.value;
+        const jabatanInput = document.getElementById('jabatanPel');
+        if (nama && DATA_PESERTA[nama]) {
+            jabatanInput.value = DATA_PESERTA[nama].jabatan;
+        } else {
+            jabatanInput.value = '';
+        }
+    }
+
+    function fillJabatanAtasan() {
+        const nama = document.getElementById('namaAlumniAtasan')?.value;
+        const jabatanInput = document.getElementById('jabatanPelAlumni');
+        if (nama && DATA_PESERTA[nama]) {
+            jabatanInput.value = DATA_PESERTA[nama].jabatan;
+        } else {
+            jabatanInput.value = '';
+        }
     }
 
     // ====================== INDIKATOR (PKN Tingkat II) ======================
@@ -1805,13 +1843,10 @@
         const g = INDIKATOR[idx];
         let html = `<div class="card"><h4 style="margin-top:0; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">${g.judul} <span style="font-weight:400; font-size:0.9rem; color:#1f6e8c;">— ${g.sub}</span></h4>`;
         g.items.forEach((item, i) => {
-            // Kode: A1_1, A1_2, dst
             const kode = g.kode + '_' + (i+1);
-            // Map ke format A11, A12, dst
             const kodeFinal = kode.replace('_', '');
             const val = FORM.jawaban[kodeFinal] || '';
 
-            // Cek apakah ini pernyataan teks
             if (item.toLowerCase().includes('sebutkan') || item.toLowerCase().includes('faktor pendukung') || item.toLowerCase().includes('kendala')) {
                 html += `<div style="margin:6px 0"><label style="font-weight:500;">${item} <span style="color:#1f6e8c; font-weight:400;">(Kode: ${kodeFinal})</span></label>
                     <input type="text" class="text-input" id="txt_${kodeFinal}" value="${val}" onchange="simpanJawaban('${kodeFinal}',this.value)" placeholder="Tulis jawaban..."></div>`;
@@ -1894,8 +1929,6 @@
             jawaban: FORM.jawaban,
             pelatihan: 'PKN Tingkat II'
         };
-
-        // Log untuk debugging        console.log('Mengirim data:', payload);
 
         fetch(GAS_URL, {
             method: 'POST',
@@ -2005,7 +2038,7 @@
             <div class="row">
                 <div class="form-group">
                     <label>Nama Responden</label>
-                    <select id="namaAlumni">
+                    <select id="namaAlumni" onchange="fillJabatanAlumni()">
                         <option value="">Pilih Nama</option>
                         ${DAFTAR_PESERTA.map(n => `<option value="${n}">${n}</option>`).join('')}
                     </select>
@@ -2022,13 +2055,13 @@
                 </div>
                 <div class="form-group">
                     <label>Jabatan Saat Pelatihan</label>
-                    <input id="jabatanPel" placeholder="Jabatan saat pelatihan">
+                    <input id="jabatanPel" readonly placeholder="Akan terisi otomatis">
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
                     <label>Jabatan Saat Ini</label>
-                    <input id="jabatanSkrg" placeholder="Jabatan saat ini">
+                    <input id="jabatanSkrg" placeholder="Jabatan saat ini (isi manual)">
                 </div>
                 <div class="form-group">
                     <label>Waktu Pelatihan</label>
@@ -2037,11 +2070,11 @@
             </div>
             <div class="form-group">
                 <label>Pelatihan yang Diikuti</label>
-                <input id="pelatihan" value="Pelatihan Kepemimpinan Nasional Tingkat II" readonly style="background:rgba(230,240,245,0.5);">
+                <input id="pelatihan" value="Pelatihan Kepemimpinan Nasional Tingkat II" readonly>
             </div>
             <div class="form-group">
                 <label>Metode Pelaksanaan</label>
-                <input id="metode" value="Blended Learning" readonly style="background:rgba(230,240,245,0.5);">
+                <input id="metode" value="Blended Learning" readonly>
             </div>
         `;
     }
@@ -2075,7 +2108,7 @@
             <h4 style="color:#0b2a3b;">IDENTITAS ALUMNI PELATIHAN</h4>
             <div class="form-group">
                 <label>Nama Alumni</label>
-                <select id="namaAlumniAtasan">
+                <select id="namaAlumniAtasan" onchange="fillJabatanAtasan()">
                     <option value="">Pilih Nama Alumni</option>
                     ${DAFTAR_PESERTA.map(n => `<option value="${n}">${n}</option>`).join('')}
                 </select>
@@ -2087,13 +2120,13 @@
                 </div>
                 <div class="form-group">
                     <label>Jabatan Saat Pelatihan</label>
-                    <input id="jabatanPelAlumni" placeholder="Jabatan saat pelatihan">
+                    <input id="jabatanPelAlumni" readonly placeholder="Akan terisi otomatis">
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
                     <label>Jabatan Saat Ini Alumni</label>
-                    <input id="jabatanSkrgAlumni" placeholder="Jabatan saat ini">
+                    <input id="jabatanSkrgAlumni" placeholder="Jabatan saat ini (isi manual)">
                 </div>
                 <div class="form-group">
                     <label>Waktu Pelatihan</label>
@@ -2102,11 +2135,11 @@
             </div>
             <div class="form-group">
                 <label>Pelatihan yang Diikuti</label>
-                <input id="pelatihanAtasan" value="Pelatihan Kepemimpinan Nasional Tingkat II" readonly style="background:rgba(230,240,245,0.5);">
+                <input id="pelatihanAtasan" value="Pelatihan Kepemimpinan Nasional Tingkat II" readonly>
             </div>
             <div class="form-group">
                 <label>Metode Pelaksanaan</label>
-                <input id="metodeAtasan" value="Blended Learning" readonly style="background:rgba(230,240,245,0.5);">
+                <input id="metodeAtasan" value="Blended Learning" readonly>
             </div>
         `;
     }
