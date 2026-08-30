@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluasi Pasca Pelatihan Kepemimpinan Nasional Tingkat II</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary: #0b3b5c;
+            --primary-light: #1f6e8c;
+            --primary-dark: #062131;
+            --accent: #1f6e8c;
+            --gradient-primary: linear-gradient(135deg, #1f6e8c, #0b3b5c);
+            --dark-blue: #062131;
+            --surface-color: #ffffff;
+            --background-color: #f0f6fb;
+            --default-color: #0b2a3b;
+            --contrast-color: #ffffff;
+            --transition: all 0.3s ease;
+            --shadow-lg: 0 20px 40px rgba(6, 33, 49, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f6fb;
+            color: var(--default-color);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(6, 33, 49, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-brand img {
+            height: 40px;
+        }
+
+        .header-brand h1 {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .header-brand span {
+            color: #6ab0d6;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-links .btn-evaluasi {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .nav-links .btn-evaluasi:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(31, 110, 140, 0.3);
+        }
+
+        .mobile-toggle {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .hero-container {
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 40px 0 60px 0;
+        }
+
+        .hero-container .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .hero-container .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(6, 33, 49, 0.85) 0%, rgba(6, 33, 49, 0.6) 100%);
+            z-index: 2;
+        }
+
+        .hero-container .container {
+            z-index: 3;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .hero-content {
+            padding-right: 20px;
+        }
+
+        .hero-content .welcome-badge {
+            display: inline-block;
+            background: rgba(31, 110, 140, 0.25);
+            color: #9ad0e8;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            border: 1px solid rgba(31, 110, 140, 0.2);
+        }
+
+        .hero-content h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content h1 span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .hero-content .cta-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-hero-primary {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(31, 110, 140, 0.35);
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(31, 110, 140, 0.5);
+        }
+
+        .btn-hero-secondary {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* ===== STATS CARD ===== */
+        .stats-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 28px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stats-card .stats-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .stats-card .stats-header h3 {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .stats-card .stats-header .decoration-line {
+            height: 3px;
+            width: 60px;
+            background: var(--gradient-primary);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 16px;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .stat-content h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .stat-content p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 2px 0 0 0;
+        }
+
+        /* ===== CHART SECTION ===== */
+        .chart-section {
+            margin-top: 40px;
+            padding: 30px 0;
+        }
+
+        .chart-section .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .chart-box {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chart-box h4 {
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .chart-box canvas {
+            max-height: 200px;
+            max-width: 100%;
+        }
+
+        /* ===== EVENT TICKER ===== */
+        .event-ticker {
+            background: var(--gradient-primary);
+            padding: 18px 0;
+            color: white;
+        }
+
+        .event-ticker .ticker-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ticker-item .date {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .ticker-item .title {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 60px 20px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 0% 100%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 50%);
+        }
+
+        .footer-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .footer-col h4::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 35px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .footer-logo img {
+            height: 45px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-footer-accent {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .btn-footer-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(31, 110, 140, 0.3);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-contact .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .footer-contact .contact-item i {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-top: 4px;
+            width: 20px;
+        }
+
+        .footer-contact .contact-item p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .partner-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            margin: 30px 0;
+        }
+
+        .partner-logo {
+            height: 35px;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .partner-logo:hover {
+            opacity: 1;
+            transform: scale(1.08);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .copyright a {
+            color: var(--accent);
+        }
+
+        .copyright a:hover {
+            text-decoration: underline;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 28px;
+            padding: 40px 45px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        .modal-box .modal-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .modal-box h3 {
+            color: var(--default-color);
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-box p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .modal-box .modal-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-box .modal-btn {
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            min-width: 140px;
+        }
+
+        .modal-box .modal-btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 6px 20px rgba(31, 110, 140, 0.3);
+        }
+
+        .modal-box .modal-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(31, 110, 140, 0.4);
+        }
+
+        .modal-box .modal-btn-secondary {
+            background: #e6f0f5;
+            color: var(--default-color);
+        }
+
+        .modal-box .modal-btn-secondary:hover {
+            background: #cfe0e8;
+            transform: translateY(-2px);
+        }
+
+        .modal-box .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 1.3rem;
+            color: #999;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-box .modal-close:hover {
+            color: #333;
+        }
+
+        /* ===== FORM CONTAINER ===== */
+        .form-container {
+            max-width: 880px;
+            margin: 100px auto 40px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 40px;
+            box-shadow: 0 28px 56px -12px rgba(6, 33, 49, 0.35);
+            padding: 36px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-container h2 {
+            color: #0b2a3b;
+            font-weight: 650;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #0b3b5c, #1f6e8c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-left: 6px solid #1f6e8c;
+            padding-left: 18px;
+            margin-bottom: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-container h2 small {
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: rgba(31, 110, 140, 0.14);
+            padding: 4px 18px;
+            border-radius: 40px;
+            color: #0b3b5c;
+            -webkit-text-fill-color: #0b3b5c;
+            margin-left: auto;
+            border: 1px solid rgba(31, 110, 140, 0.15);
+        }
+
+        .step {
+            display: none;
+            animation: fadeSlide 0.35s cubic-bezier(0.15, 0.85, 0.35, 1);
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0.4; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== FORM STYLES ===== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #0b2a3b;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.92rem;
+            letter-spacing: -0.01em;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #bdd9e8;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            transition: 0.25s;
+            color: #0b2a3b;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1f6e8c;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(31, 110, 140, 0.18);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .row {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .row>* {
+            flex: 1 1 180px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(31, 110, 140, 0.12);
+            padding-top: 24px;
+        }
+
+        .btn {
+            padding: 10px 30px;
+            border-radius: 60px;
+            font-weight: 500;
+            border: none;
+            background: #e6f0f5;
+            color: #0b2a3b;
+            cursor: pointer;
+            transition: 0.18s;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.01em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #1f6e8c, #0b3b5c);
+            color: white;
+            box-shadow: 0 6px 16px -4px rgba(31, 110, 140, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(145deg, #1a5f7a, #08304a);
+            transform: scale(0.97);
+            box-shadow: 0 8px 20px -4px rgba(31, 110, 140, 0.45);
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid #bdd9e8;
+            color: #0b2a3b;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #1f6e8c;
+        }
+
+        .btn-success {
+            background: linear-gradient(145deg, #2d7d5a, #1e5c40);
+            color: white;
+            box-shadow: 0 6px 16px -4px rgba(45, 125, 90, 0.3);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(145deg, #256c4d, #184d34);
+            transform: scale(0.97);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.25);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(6px);
+            border-radius: 26px;
+            padding: 20px 24px;
+            margin: 18px 0;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(31, 110, 140, 0.06);
+        }
+
+        .grid-score {
+            display: grid;
+            grid-template-columns: 1fr 48px 48px 48px 48px;
+            gap: 6px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 10px 14px;
+            border-radius: 20px;
+            margin: 8px 0;
+            box-shadow: 0 1px 6px rgba(6, 33, 49, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .grid-score .pernyataan {
+            font-weight: 500;
+            color: #0b2a3b;
+            font-size: 0.92rem;
+        }
+
+        .grid-score label {
+            display: flex;
+            justify-content: center;
+            font-weight: 400;
+            color: #0b2a3b;
+            cursor: pointer;
+            font-size: 0.9rem;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .grid-score input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #1f6e8c;
+            margin: 0;
+        }
+
+        .petunjuk {
+            background: rgba(230, 240, 245, 0.7);
+            backdrop-filter: blur(6px);
+            border-radius: 24px;
+            padding: 18px 24px;
+            border-left: 6px solid #1f6e8c;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .petunjuk h4 {
+            margin-top: 0;
+            color: #0b2a3b;
+            font-weight: 600;
+        }
+
+        .petunjuk ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            margin-bottom: 0;
+        }
+
+        .petunjuk ul li {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 4px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(31, 110, 140, 0.12);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 24px 0 12px;
+            background: rgba(248, 246, 254, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 12px 22px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            accent-color: #1f6e8c;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: 500;
+            color: #0b2a3b;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #bdd9e8;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            margin-top: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+
+        .text-input:focus {
+            border-color: #1f6e8c;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(31, 110, 140, 0.12);
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid rgba(255,255,255,0.25);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, rgba(31, 110, 140, 0.2), transparent);
+            margin: 22px 0;
+        }
+
+        .btn-role {
+            padding: 18px 44px;
+            font-size: 1.1rem;
+            min-width: 180px;
+            background: linear-gradient(145deg, #1f6e8c, #0b3b5c);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px -4px rgba(31, 110, 140, 0.3);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-role:hover {
+            transform: scale(0.97);
+            box-shadow: 0 10px 28px -4px rgba(31, 110, 140, 0.45);
+        }
+
+        .btn-role-secondary {
+            background: linear-gradient(145deg, #0b4a5e, #072f3d);
+        }
+
+        .btn-role-secondary:hover {
+            background: linear-gradient(145deg, #0a3d4f, #05232d);
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(31, 110, 140, 0.35);
+            transition: var(--transition);
+            z-index: 999;
+            border: none;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(31, 110, 140, 0.5);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .hero-content {
+                padding-right: 0;
+                text-align: center;
+            }
+
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-content .cta-buttons {
+                justify-content: center;
+            }
+
+            .chart-section .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.4rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .event-ticker .ticker-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: rgba(6, 33, 49, 0.98);
+                flex-direction: column;
+                padding: 30px 20px;
+                gap: 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .stat-item {
+                padding: 10px 12px;
+            }
+
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .stat-content h4 {
+                font-size: 1.1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .partner-logos {
+                gap: 20px;
+            }
+
+            .partner-logo {
+                height: 28px;
+            }
+
+            .modal-box {
+                padding: 30px 24px;
+            }
+
+            .modal-box .modal-buttons {
+                flex-direction: column;
+            }
+
+            .modal-box .modal-btn {
+                width: 100%;
+            }
+
+            .form-container {
+                padding: 24px 18px;
+                border-radius: 28px;
+                margin: 80px 16px 30px;
+            }
+
+            .form-container h2 {
+                font-size: 1.3rem;
+                flex-wrap: wrap;
+            }
+
+            .form-container h2 small {
+                margin-left: 0;
+                font-size: 0.7rem;
+            }
+
+            .grid-score {
+                grid-template-columns: 1fr 36px 36px 36px 36px;
+                gap: 4px;
+                padding: 8px 10px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-group .btn {
+                justify-content: center;
+            }
+
+            .hero-content .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-content .cta-buttons .btn-hero-primary,
+            .hero-content .cta-buttons .btn-hero-secondary {
+                width: 100%;
+                max-width: 320px;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding-top: 70px;
+                min-height: auto;
+            }
+
+            .hero-container {
+                min-height: auto;
+                padding: 20px 0 30px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.6rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-card {
+                padding: 20px;
+            }
+
+            .header-brand h1 {
+                font-size: 0.9rem;
+            }
+
+            .header-brand img {
+                height: 32px;
+            }
+
+            .footer-logo img {
+                height: 36px;
+            }
+
+            .copyright {
+                font-size: 0.75rem;
+            }
+
+            .ticker-item {
+                flex-wrap: wrap;
+            }
+
+            .ticker-item .title {
+                font-size: 0.8rem;
+            }
+
+            .scroll-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="header">
+    <div class="container">
+        <div class="header-brand">
+            <img src="https://i.ibb.co.com/JWw8qHmM/logo-bkpsdm.png" alt="Logo BKPSDM">
+            <h1>BKPSDM <span>Ciamis</span></h1>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#hero">Beranda</a></li>
+            <li><a href="#form-section">Evaluasi</a></li>
+            <li><a href="#footer">Kontak</a></li>
+            <li><a href="#" class="btn-evaluasi" onclick="openModal()">PKN Tingkat II</a></li>
+        </ul>
+        <div class="mobile-toggle" onclick="toggleNav()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</header>
+
+<!-- ===== HERO SECTION ===== -->
+<section id="hero" class="hero">
+    <div class="hero-container">
+        <video autoplay muted loop playsinline class="video-background">
+            <source src="https://bkpsdm.ciamiskab.go.id/assetss/teasernew.mp4" type="video/mp4">
+        </video>
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="welcome-badge">
+                        <i class="fas fa-graduation-cap"></i> Evaluasi Pasca Pelatihan Kepemimpinan Nasional Tingkat II
+                    </div>
+                    <h1>Evaluasi <span>Pasca PKN</span> Tingkat II</h1>
+                    <p>Berikan penilaian Anda mengenai dampak pelatihan terhadap peningkatan kompetensi kepemimpinan dan kinerja ASN di lingkungan Pemerintah Kabupaten Ciamis.</p>
+                    <div class="cta-buttons">
+                        <button class="btn-hero-primary" onclick="openModal()">
+                            <i class="fas fa-clipboard-check"></i> PKN Tingkat II
+                        </button>
+                        <a href="#chart-section" class="btn-hero-secondary">
+                            <i class="fas fa-chart-line"></i> Lihat Statistik
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <div class="stats-card">
+                        <div class="stats-header">
+                            <h3>Statistik Evaluasi</h3>
+                            <div class="decoration-line"></div>
+                        </div>
+                        <div class="stats-grid" id="statsGrid">
+                            <div class="stat-item">
+                                <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                                <div class="stat-content">
+                                    <h4 id="totalAlumni">0</h4>
+                                    <p>Total Alumni Mengisi</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon"><i class="fas fa-user-tie"></i></div>
+                                <div class="stat-content">
+                                    <h4 id="totalAtasan">0</h4>
+                                    <p>Total Atasan Mengisi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart Section inside hero -->
+                    <div class="chart-section" id="chart-section">
+                        <div class="chart-grid">
+                            <div class="chart-box">
+                                <h4><i class="fas fa-user-graduate"></i> Alumni per Angkatan</h4>
+                                <canvas id="chartAlumni"></canvas>
+                            </div>
+                            <div class="chart-box">
+                                <h4><i class="fas fa-user-tie"></i> Atasan Alumni per Angkatan</h4>
+                                <canvas id="chartAtasan"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Ticker -->
+    <div class="event-ticker">
+        <div class="container">
+            <div class="ticker-grid">
+                <div class="ticker-item">
+                    <span class="date">2025</span>
+                    <span class="title">PKN Tingkat II Angkatan 1</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="date">2025</span>
+                    <span class="title">PKN Tingkat II Angkatan 2</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="date">2025</span>
+                    <span class="title">PKN Tingkat II Angkatan 3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FORM CONTAINER ===== -->
+<div class="form-container" id="formSection">
+    <h2>
+        Evaluasi Pasca Pelatihan Kepemimpinan Nasional Tingkat II
+        <small>PKN II</small>
+    </h2>
+
+    <!-- STEP PILIH PERAN -->
+    <div id="step-pilih" class="step active">
+        <div style="display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin: 32px 0 12px;">
+            <button class="btn-role" onclick="pilihFormulir('alumni')">
+                <i class="fas fa-user-graduate"></i> Alumni
+            </button>
+            <button class="btn-role btn-role-secondary" onclick="pilihFormulir('atasan')">
+                <i class="fas fa-user-tie"></i> Atasan Alumni
+            </button>
+        </div>
+        <div class="petunjuk" style="border-left-color: #1f6e8c;">
+            <p style="margin: 6px 0 0;">Pilih peran Anda untuk mengisi formulir evaluasi pasca Pelatihan Kepemimpinan Nasional Tingkat II Tahun 2025.</p>
+        </div>
+    </div>
+
+    <!-- STEP IDENTITAS -->
+    <div id="step-identitas" class="step">
+        <div id="form-identitas"></div>
+        <div class="btn-group">
+            <button class="btn btn-outline" onclick="batal()">Batalkan</button>
+            <button class="btn btn-primary" onclick="lanjutKePetunjuk()">Selanjutnya</button>
+        </div>
+    </div>
+
+    <!-- STEP PETUNJUK -->
+    <div id="step-petunjuk" class="step">
+        <div class="petunjuk">
+            <h4>Petunjuk Pengisian</h4>
+            <p style="margin-top: 2px;">Berilah tanda (X) atau tuliskan jawaban sesuai kondisi nyata. Skor penilaian:</p>
+            <ul>
+                <li>1 — Tidak Sesuai</li>
+                <li>2 — Kurang Sesuai</li>
+                <li>3 — Sesuai</li>
+                <li>4 — Sangat Sesuai</li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-outline" onclick="kembaliKeIdentitas()">Kembali</button>
+            <button class="btn btn-success" onclick="mulaiPengisian()">Mulai Mengisi</button>
+        </div>
+    </div>
+
+    <!-- STEP PENGISIAN INDIKATOR -->
+    <div id="step-pengisian" class="step">
+        <div id="indikator-container"></div>
+        <div class="btn-group">
+            <button class="btn btn-outline" id="btn-kembali-indikator" onclick="kembaliIndikator()">Kembali</button>
+            <button class="btn btn-primary" id="btn-selanjutnya" onclick="selanjutnyaIndikator()">Selanjutnya</button>
+        </div>
+    </div>
+
+    <!-- STEP KONFIRMASI -->
+    <div id="step-konfirmasi" class="step">
+        <div style="background: rgba(230, 240, 245, 0.7); backdrop-filter: blur(6px); border-radius: 26px; padding: 22px 26px; margin: 12px 0 20px; border: 1px solid rgba(255,255,255,0.3);">
+            <h4 style="margin: 0 0 6px; color: #0b2a3b;">Tinjau Kembali Jawaban</h4>
+            <p style="margin: 0; color: #0b3b5c;">Pastikan semua pernyataan telah terisi dengan benar.</p>
+        </div>
+        <div class="checkbox-group">
+            <input type="checkbox" id="setuju" onchange="toggleKirim()">
+            <label for="setuju">Saya menyatakan bahwa semua jawaban telah sesuai dan siap dikirim.</label>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-outline" onclick="kembaliKePengisian()">Kembali</button>
+            <button class="btn btn-success" id="btn-kirim" disabled onclick="kirimData()">Kirim Evaluasi</button>
+        </div>
+    </div>
+
+    <!-- STEP TERIMA KASIH -->
+    <div id="step-terimakasih" class="step">
+        <div style="text-align: center; padding: 44px 10px 28px;">
+            <div style="font-size: 3.4rem; margin-bottom: 8px; background: linear-gradient(145deg, #1f6e8c, #6ab0d6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">✓</div>
+            <h3 style="color: #0b2a3b; font-weight: 650;">Terima Kasih</h3>
+            <p style="font-size: 1.1rem; color: #0b3b5c;">Formulir penilaian pasca pelatihan kepemimpinan telah berhasil disimpan.</p>
+            <div style="margin-top: 24px; background: rgba(230, 240, 245, 0.7); backdrop-filter: blur(4px); padding: 8px 24px; border-radius: 60px; display: inline-block; color: #0b2a3b; border: 1px solid rgba(255,255,255,0.3);">Data tersimpan</div>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="resetForm()">Kembali ke Beranda</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-icon"><i class="fas fa-file-signature"></i></div>
+        <h3>Pilih Peran Anda</h3>
+        <p>Silakan pilih peran Anda untuk mengisi formulir evaluasi pasca Pelatihan Kepemimpinan Nasional Tingkat II.</p>
+        <div class="modal-buttons">
+            <button class="modal-btn modal-btn-primary" onclick="selectRole('alumni')">
+                <i class="fas fa-user-graduate"></i> Alumni
+            </button>
+            <button class="modal-btn modal-btn-secondary" onclick="selectRole('atasan')">
+                <i class="fas fa-user-tie"></i> Atasan Alumni
+            </button>
+        </div>
+        <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer" id="footer">
+    <div class="container footer-container">
+        <div class="footer-content">
+            <div class="footer-col footer-logo">
+                <img src="https://i.ibb.co.com/JWw8qHmM/logo-bkpsdm.png" alt="BKPSDM Logo">
+                <p>
+                    Formulir Pasca PKN Tingkat II Tahun 2025 merupakan platform evaluasi digital untuk mengukur dampak pelatihan kepemimpinan terhadap peningkatan kompetensi dan profesionalisme ASN Kabupaten Ciamis.
+                </p>
+                <a href="#" class="btn-footer-accent" onclick="openModal()">
+                    <i class="fas fa-clipboard-check"></i> Isi Evaluasi
+                </a>
+            </div>
+
+            <div class="footer-col footer-links">
+                <h4>Link Cepat</h4>
+                <ul>
+                    <li><a href="#hero"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="#form-section"><i class="fas fa-file-alt"></i> Evaluasi</a></li>
+                    <li><a href="#chart-section"><i class="fas fa-chart-bar"></i> Statistik</a></li>
+                    <li><a href="#footer"><i class="fas fa-envelope"></i> Kontak</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-links">
+                <h4>Layanan</h4>
+                <ul>
+                    <li><a href="#"><i class="fas fa-comments"></i> Konsultasi & Saran</a></li>
+                    <li><a href="#"><i class="fas fa-newspaper"></i> Informasi Terkini</a></li>
+                    <li><a href="#"><i class="fas fa-download"></i> Unduhan</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> Bantuan</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-contact">
+                <h4>Kontak Kami</h4>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Jl. Sadananya No. 27, Kelurahan Maleber, Kecamatan Ciamis, Kabupaten Ciamis</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>bidangpkabkpsdmciamis@gmail.com<br>bkpsdm@ciamiskab.go.id</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <p>(0265) 771234<br>Senin - Jumat, 08:00 - 16:00 WIB</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="partner-logos">
+            <img src="https://i.ibb.co.com/tMnbFSr5/Lambang-Kabupaten-Ciamis.png" alt="Lambang Kabupaten Ciamis" class="partner-logo">
+            <img src="https://i.ibb.co.com/JWw8qHmM/logo-bkpsdm.png" alt="Logo BKPSDM" class="partner-logo">
+            <img src="https://i.ibb.co.com/6JvSKyNf/Logo-Ber-AKHLAK-svg.png" alt="Logo BerAKHLAK" class="partner-logo">
+            <img src="https://i.ibb.co.com/99NKJGNg/bangga.png" alt="Bangga Melayani Bangsa" class="partner-logo">
+        </div>
+
+        <div class="footer-bottom">
+            <div class="copyright">
+                <p>&copy; 2025 <a href="#">PKA BKPSDM Kabupaten Ciamis</a>. All Rights Reserved.</p>
+                <p>Formulir Pasca PKN Tingkat II 2025 | Versi 2.0</p>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ===== SCROLL TO TOP ===== -->
+<button class="scroll-top" id="scrollTop">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+    // ====================== KONFIGURASI ======================
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxsKDh_wM94yrxU8sD2KdpDShaPLZ_IGtna1xxwSdT9KI2sowPZEpaE9Vgt6dRznNZM/exec';
+    const SHEET_ID = '1z7V_-QlyK_OcfCUpHA51iM57PqVAM7_uUDFAZ_BYuwI';
+
+    // ====================== STATE ======================
+    const FORM = { jenis: null, data: {}, indikatorIndex: 0, jawaban: {} };
+    let isSubmitting = false;
+    let chartAlumniInstance = null;
+    let chartAtasanInstance = null;
+
+    // ====================== DATA PESERTA ======================
+    const DAFTAR_PESERTA = [
+        'Dr. Giyatno, S.IP., M.Si.',
+        'Yayan Muhamad Supyan, AP., S.IP., M.M.',
+        'Heryan Rusyandi, S.Sos., M.M.',
+        'Dase Fadlil Yusdy Mubarak, S.H.',
+        'Eka Permana Oktaviana, S.T., M.A.P.'
+    ];
+
+    // ====================== DAFTAR KODE PERNYATAAN ======================
+    const KODE_PERNYATAAN = [
+        'A11', 'A12', 'A13', 'A14',
+        'A21', 'A22', 'A23', 'A24',
+        'A31', 'A32', 'A33', 'A34', 'A35',
+        'B11', 'B12',
+        'B21', 'B22', 'B23', 'B24',
+        'C11', 'C12', 'C13', 'C14', 'C15',
+        'C21',
+        'D11', 'D12', 'D13',
+        'D21'
+    ];
+
+    // ====================== NAV TOGGLE ======================
+    function toggleNav() {
+        document.getElementById('navLinks').classList.toggle('active');
+    }
+
+    // ====================== MODAL ======================
+    function openModal() {
+        document.getElementById('modalOverlay').classList.add('active');
+        document.getElementById('formSection').classList.add('active');
+        document.getElementById('formSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function selectRole(jenis) {
+        closeModal();
+        pilihFormulir(jenis);
+    }
+
+    // ====================== INDIKATOR (PKN Tingkat II) ======================
+    const INDIKATOR = [
+        // A. PERUBAHAN SIKAP PERILAKU - Mengelola Diri
+        { kode: 'A1', judul: 'PERUBAHAN SIKAP PERILAKU', sub: 'Mengelola Diri', items: [
+            'Mampu mempraktikkan pengelolaan energi dan potensi diri untuk memimpin perubahan strategis organisasi',
+            'Mempunyai potensi untuk mengikuti PKN I',
+            'Mampu mengantisipasi tantangan dan risiko penegakan integritas dalam penyelenggaraan pemerintahan yang bersih dan akuntabel',
+            'Menerapkan kerangka kebijakan pemerintahan yang bersih dan akuntabel'
+        ]},
+        // A. PERUBAHAN SIKAP PERILAKU - Kepemimpinan Strategis
+        { kode: 'A2', judul: 'PERUBAHAN SIKAP PERILAKU', sub: 'Kepemimpinan Strategis', items: [
+            'Mampu mengeksplorasi perkembangan teknologi digital dan implikasinya terhadap perbaikan kebijakan strategis organisasi',
+            'Mampu mengembangkan peran dan fungsi kepemimpinan di era digital',
+            'Mampu mengimplementasikan kepemimpinan kewirausahaan dan mengorganisir kepemimpinan kewirausahaan',
+            'Mampu membangun organisasi pembelajaran'
+        ]},
+        // A. PERUBAHAN SIKAP PERILAKU - Manajemen Strategis
+        { kode: 'A3', judul: 'PERUBAHAN SIKAP PERILAKU', sub: 'Manajemen Strategis', items: [
+            'Mampu menerapkan manajemen strategis sektor publik',
+            'Mampu mempraktikkan teknik penyusunan rencana strategis pada instansi pemerintah',
+            'Memahami isu strategis tentang integritas kepemimpinan, kepemimpinan kewirausahaan dan kebijakan nasional',
+            'Mampu mengembangkan strategi marketing sektor publik yang efektif',
+            'Mampu mengembangkan kemitraan sektor publik atau privat'
+        ]},
+        // B. DAMPAK PELATIHAN - Produktivitas
+        { kode: 'B1', judul: 'DAMPAK PELATIHAN', sub: 'Produktivitas', items: [
+            'Terdapat peningkatan produktivitas individu setelah mengikuti pelatihan',
+            'Dapat berkontribusi lebih dalam peningkatan kinerja organisasi'
+        ]},
+        // B. DAMPAK PELATIHAN - Keberlanjutan Proyek Perubahan
+        { kode: 'B2', judul: 'DAMPAK PELATIHAN', sub: 'Keberlanjutan Proyek Perubahan', items: [
+            'Target proyek perubahan dalam jangka panjang tercapai',
+            'Seluruh tujuan proyek perubahan dapat tercapai',
+            'Keberhasilan kepemimpinan strategis',
+            'Manfaat proyek perubahan'
+        ]},
+        // Faktor Pendukung
+        { kode: 'C1', judul: 'FAKTOR PENDUKUNG', sub: 'Dukungan Pelaksanaan Proyek Perubahan', items: [
+            'Terdapat dukungan dari Mentor',
+            'Terdapat dukungan Pemangku Kepentingan',
+            'Terdapat dukungan dari Anggota Tim',
+            'Terdapat dukungan Sarana dan Prasarana',
+            'Dijadikan kegiatan rutin dalam menunjang tugas dan fungsi'
+        ]},
+        // Faktor Pendukung Lainnya (isi teks)
+        { kode: 'C2', judul: 'FAKTOR PENDUKUNG', sub: 'Faktor Pendukung Lainnya', items: [
+            'Sebutkan faktor pendukung pelaksanaan proyek perubahan yang lain, jika ada!'
+        ]},
+        // Kendala/Hambatan
+        { kode: 'D1', judul: 'KENDALA / HAMBATAN', sub: 'Hambatan Pelaksanaan Proyek Perubahan', items: [
+            'Pekerjaan rutin menjadi kendala dalam pelaksanaan proyek perubahan',
+            'Kurangnya dukungan dari lingkungan unit kerja',
+            'Keterbatasan sumber daya menghambat pelaksanaan proyek perubahan'
+        ]},
+        // Kendala Lainnya (isi teks)
+        { kode: 'D2', judul: 'KENDALA / HAMBATAN', sub: 'Kendala Lainnya', items: [
+            'Sebutkan kendala/hambatan lain yang dihadapi dalam pelaksanaan proyek perubahan, jika ada!'
+        ]}
+    ];
+
+    // ====================== FUNGSI UI ======================
+    function showStep(id) {
+        document.querySelectorAll('#formSection .step').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function pilihFormulir(jenis) {
+        FORM.jenis = jenis;
+        document.getElementById('form-identitas').innerHTML = '';
+        if (jenis === 'alumni') buildIdentitasAlumni();
+        else buildIdentitasAtasan();
+        showStep('step-identitas');
+        document.getElementById('formSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function batal() { showStep('step-pilih'); }
+
+    function lanjutKePetunjuk() {
+        if (FORM.jenis === 'alumni') {
+            const nama = document.getElementById('namaAlumni')?.value;
+            if (!nama) { alert('Pilih nama peserta terlebih dahulu.'); return; }
+            const alamat = document.getElementById('alamat')?.value;
+            const instansi = document.getElementById('instansi')?.value;
+            const jabatanPel = document.getElementById('jabatanPel')?.value;
+            const jabatanSkrg = document.getElementById('jabatanSkrg')?.value;
+            const waktu = document.getElementById('waktu')?.value;
+            if (!alamat || !instansi || !jabatanPel || !jabatanSkrg || !waktu) {
+                alert('Lengkapi semua identitas.');
+                return;
+            }
+            FORM.data = {
+                nama: nama,
+                alamat: alamat,
+                instansi: instansi,
+                jabatanPel: jabatanPel,
+                jabatanSkrg: jabatanSkrg,
+                pelatihan: 'Pelatihan Kepemimpinan Nasional Tingkat II',
+                waktu: waktu,
+                metode: 'Blended Learning'
+            };
+        } else {
+            const namaAtasan = document.getElementById('namaAtasan')?.value;
+            const alamatAtasan = document.getElementById('alamatAtasan')?.value;
+            const instansiAtasan = document.getElementById('instansiAtasan')?.value;
+            const jabatanAtasan = document.getElementById('jabatanAtasan')?.value;
+            const namaAlumni = document.getElementById('namaAlumniAtasan')?.value;
+            const instansiAlumni = document.getElementById('instansiAlumni')?.value;
+            const jabatanPelAlumni = document.getElementById('jabatanPelAlumni')?.value;
+            const jabatanSkrgAlumni = document.getElementById('jabatanSkrgAlumni')?.value;
+            const waktu = document.getElementById('waktuAtasan')?.value;
+            
+            if (!namaAtasan || !alamatAtasan || !instansiAtasan || !jabatanAtasan || !namaAlumni || !instansiAlumni || !jabatanPelAlumni || !jabatanSkrgAlumni || !waktu) {
+                alert('Lengkapi semua identitas.');
+                return;
+            }
+            FORM.data = {
+                namaAtasan: namaAtasan,
+                alamatAtasan: alamatAtasan,
+                instansiAtasan: instansiAtasan,
+                jabatanAtasan: jabatanAtasan,
+                namaAlumni: namaAlumni,
+                instansiAlumni: instansiAlumni,
+                jabatanPelAlumni: jabatanPelAlumni,
+                jabatanSkrgAlumni: jabatanSkrgAlumni,
+                pelatihan: 'Pelatihan Kepemimpinan Nasional Tingkat II',
+                waktu: waktu,
+                metode: 'Blended Learning'
+            };
+        }
+        showStep('step-petunjuk');
+    }
+
+    function kembaliKeIdentitas() { showStep('step-identitas'); }
+
+    function mulaiPengisian() {
+        FORM.indikatorIndex = 0;
+        FORM.jawaban = {};
+        renderIndikator(0);
+        showStep('step-pengisian');
+    }
+
+    function renderIndikator(idx) {
+        const container = document.getElementById('indikator-container');
+        if (idx >= INDIKATOR.length) {
+            showStep('step-konfirmasi');
+            return;
+        }
+        const g = INDIKATOR[idx];
+        let html = `<div class="card"><h4 style="margin-top:0; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">${g.judul} <span style="font-weight:400; font-size:0.9rem; color:#1f6e8c;">— ${g.sub}</span></h4>`;
+        g.items.forEach((item, i) => {
+            // Kode: A1_1, A1_2, dst
+            const kode = g.kode + '_' + (i+1);
+            // Map ke format A11, A12, dst
+            const kodeFinal = kode.replace('_', '');
+            const val = FORM.jawaban[kodeFinal] || '';
+
+            // Cek apakah ini pernyataan teks
+            if (item.toLowerCase().includes('sebutkan') || item.toLowerCase().includes('faktor pendukung') || item.toLowerCase().includes('kendala')) {
+                html += `<div style="margin:6px 0"><label style="font-weight:500;">${item} <span style="color:#1f6e8c; font-weight:400;">(Kode: ${kodeFinal})</span></label>
+                    <input type="text" class="text-input" id="txt_${kodeFinal}" value="${val}" onchange="simpanJawaban('${kodeFinal}',this.value)" placeholder="Tulis jawaban..."></div>`;
+            } else {
+                html += `<div class="grid-score"><span class="pernyataan">${item} <span style="color:#1f6e8c; font-weight:400; font-size:0.8rem;">(${kodeFinal})</span></span>
+                    ${[1,2,3,4].map(n => `<label><input type="radio" name="${kodeFinal}" value="${n}" ${val==n?'checked':''} onchange="simpanJawaban('${kodeFinal}','${n}')"> ${n}</label>`).join('')}
+                </div>`;
+            }
+        });
+        html += '</div>';
+        container.innerHTML = html;
+        document.getElementById('btn-selanjutnya').innerText = (idx === INDIKATOR.length-1) ? 'Selesai' : 'Selanjutnya';
+        document.getElementById('btn-kembali-indikator').style.display = (idx === 0) ? 'none' : 'inline-block';
+    }
+
+    function simpanJawaban(kode, val) {
+        FORM.jawaban[kode] = val;
+    }
+
+    function selanjutnyaIndikator() {
+        const g = INDIKATOR[FORM.indikatorIndex];
+        const items = g.items;
+        let allFilled = true;
+        items.forEach((item, i) => {
+            const kode = g.kode + (i+1);
+            const val = FORM.jawaban[kode];
+            if (!val || val === '') allFilled = false;
+        });
+        if (!allFilled) { alert('Semua pernyataan wajib diisi.'); return; }
+
+        if (FORM.indikatorIndex === INDIKATOR.length-1) {
+            showStep('step-konfirmasi');
+        } else {
+            FORM.indikatorIndex++;
+            renderIndikator(FORM.indikatorIndex);
+        }
+    }
+
+    function kembaliIndikator() {
+        if (FORM.indikatorIndex > 0) {
+            FORM.indikatorIndex--;
+            renderIndikator(FORM.indikatorIndex);
+        }
+    }
+
+    function kembaliKePengisian() {
+        renderIndikator(INDIKATOR.length-1);
+        showStep('step-pengisian');
+    }
+
+    function toggleKirim() {
+        document.getElementById('btn-kirim').disabled = !document.getElementById('setuju').checked;
+    }
+
+    function resetForm() {
+        FORM.jenis = null;
+        FORM.data = {};
+        FORM.jawaban = {};
+        FORM.indikatorIndex = 0;
+        document.getElementById('formSection').classList.remove('active');
+        showStep('step-pilih');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ====================== KIRIM DATA ======================
+    function kirimData() {
+        if (isSubmitting) return;
+        if (!document.getElementById('setuju').checked) { alert('Centang persetujuan terlebih dahulu.'); return; }
+
+        const btnKirim = document.getElementById('btn-kirim');
+        const originalText = btnKirim.innerHTML;
+        btnKirim.innerHTML = '<span class="spinner"></span> Mengirim...';
+        btnKirim.disabled = true;
+        btnKirim.classList.add('btn-loading');
+        isSubmitting = true;
+
+        const payload = {
+            jenis: FORM.jenis,
+            dataIdentitas: FORM.data,
+            jawaban: FORM.jawaban,
+            pelatihan: 'PKN Tingkat II'
+        };
+
+        // Log untuk debugging        console.log('Mengirim data:', payload);
+
+        fetch(GAS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            showStep('step-terimakasih');
+            loadStats();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Gagal menyimpan data. Silakan coba lagi.');
+            btnKirim.innerHTML = originalText;
+            btnKirim.disabled = false;
+            btnKirim.classList.remove('btn-loading');
+            isSubmitting = false;
+        })
+        .finally(() => {
+            isSubmitting = false;
+        });
+    }
+
+    // ====================== LOAD STATS & CHARTS ======================
+    async function loadStats() {
+        try {
+            const response = await fetch(`${GAS_URL}?action=getStats&sheetId=${SHEET_ID}&pelatihan=PKN%20Tingkat%20II`);
+            const data = await response.json();
+
+            if (data) {
+                document.getElementById('totalAlumni').textContent = data.totalAlumni || 0;
+                document.getElementById('totalAtasan').textContent = data.totalAtasan || 0;
+                updateCharts(data);
+            }
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        }
+    }
+
+    function updateCharts(data) {
+        const alumniData = data.alumniPerAngkatan || {};
+        const atasanData = data.atasanPerAngkatan || {};
+
+        const angkatanLabels = Object.keys(alumniData);
+        const alumniValues = Object.values(alumniData);
+        const atasanValues = angkatanLabels.map(a => atasanData[a] || 0);
+
+        const ctxAlumni = document.getElementById('chartAlumni').getContext('2d');
+        if (chartAlumniInstance) chartAlumniInstance.destroy();
+        chartAlumniInstance = new Chart(ctxAlumni, {
+            type: 'bar',
+            data: {
+                labels: angkatanLabels,
+                datasets: [{
+                    label: 'Jumlah Alumni',
+                    data: alumniValues,
+                    backgroundColor: 'rgba(31, 110, 140, 0.7)',
+                    borderColor: '#1f6e8c',
+                    borderWidth: 2,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1, color: 'rgba(255,255,255,0.7)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    x: { ticks: { color: 'rgba(255,255,255,0.7)' }, grid: { display: false } }
+                }
+            }
+        });
+
+        const ctxAtasan = document.getElementById('chartAtasan').getContext('2d');
+        if (chartAtasanInstance) chartAtasanInstance.destroy();
+        chartAtasanInstance = new Chart(ctxAtasan, {
+            type: 'bar',
+            data: {
+                labels: angkatanLabels,
+                datasets: [{
+                    label: 'Jumlah Atasan',
+                    data: atasanValues,
+                    backgroundColor: 'rgba(52, 211, 153, 0.7)',
+                    borderColor: '#34d399',
+                    borderWidth: 2,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1, color: 'rgba(255,255,255,0.7)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    x: { ticks: { color: 'rgba(255,255,255,0.7)' }, grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    // ====================== BUILD IDENTITAS ALUMNI ======================
+    function buildIdentitasAlumni() {
+        const div = document.getElementById('form-identitas');
+        div.innerHTML = `
+            <h3 style="margin-top:0; color:#0b2a3b;">IDENTITAS RESPONDEN</h3>
+            <div class="row">
+                <div class="form-group">
+                    <label>Nama Responden</label>
+                    <select id="namaAlumni">
+                        <option value="">Pilih Nama</option>
+                        ${DAFTAR_PESERTA.map(n => `<option value="${n}">${n}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Alamat Responden</label>
+                    <input id="alamat" placeholder="Alamat lengkap">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Nama Instansi</label>
+                    <input id="instansi" placeholder="Nama Instansi">
+                </div>
+                <div class="form-group">
+                    <label>Jabatan Saat Pelatihan</label>
+                    <input id="jabatanPel" placeholder="Jabatan saat pelatihan">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Jabatan Saat Ini</label>
+                    <input id="jabatanSkrg" placeholder="Jabatan saat ini">
+                </div>
+                <div class="form-group">
+                    <label>Waktu Pelatihan</label>
+                    <input id="waktu" placeholder="Contoh: 12 Februari - 2 Desember 2025">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Pelatihan yang Diikuti</label>
+                <input id="pelatihan" value="Pelatihan Kepemimpinan Nasional Tingkat II" readonly style="background:rgba(230,240,245,0.5);">
+            </div>
+            <div class="form-group">
+                <label>Metode Pelaksanaan</label>
+                <input id="metode" value="Blended Learning" readonly style="background:rgba(230,240,245,0.5);">
+            </div>
+        `;
+    }
+
+    // ====================== BUILD IDENTITAS ATASAN ======================
+    function buildIdentitasAtasan() {
+        const div = document.getElementById('form-identitas');
+        div.innerHTML = `
+            <h3 style="margin-top:0; color:#0b2a3b;">IDENTITAS RESPONDEN</h3>
+            <div class="row">
+                <div class="form-group">
+                    <label>Nama Responden (Atasan)</label>
+                    <input id="namaAtasan" placeholder="Nama lengkap atasan">
+                </div>
+                <div class="form-group">
+                    <label>Alamat Responden</label>
+                    <input id="alamatAtasan" placeholder="Alamat lengkap">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Nama Instansi</label>
+                    <input id="instansiAtasan" placeholder="Nama instansi">
+                </div>
+                <div class="form-group">
+                    <label>Jabatan Saat Ini</label>
+                    <input id="jabatanAtasan" placeholder="Jabatan saat ini">
+                </div>
+            </div>
+            <hr>
+            <h4 style="color:#0b2a3b;">IDENTITAS ALUMNI PELATIHAN</h4>
+            <div class="form-group">
+                <label>Nama Alumni</label>
+                <select id="namaAlumniAtasan">
+                    <option value="">Pilih Nama Alumni</option>
+                    ${DAFTAR_PESERTA.map(n => `<option value="${n}">${n}</option>`).join('')}
+                </select>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Nama Instansi Alumni</label>
+                    <input id="instansiAlumni" placeholder="Nama instansi alumni">
+                </div>
+                <div class="form-group">
+                    <label>Jabatan Saat Pelatihan</label>
+                    <input id="jabatanPelAlumni" placeholder="Jabatan saat pelatihan">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Jabatan Saat Ini Alumni</label>
+                    <input id="jabatanSkrgAlumni" placeholder="Jabatan saat ini">
+                </div>
+                <div class="form-group">
+                    <label>Waktu Pelatihan</label>
+                    <input id="waktuAtasan" placeholder="Contoh: 12 Februari - 2 Desember 2025">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Pelatihan yang Diikuti</label>
+                <input id="pelatihanAtasan" value="Pelatihan Kepemimpinan Nasional Tingkat II" readonly style="background:rgba(230,240,245,0.5);">
+            </div>
+            <div class="form-group">
+                <label>Metode Pelaksanaan</label>
+                <input id="metodeAtasan" value="Blended Learning" readonly style="background:rgba(230,240,245,0.5);">
+            </div>
+        `;
+    }
+
+    // ====================== SCROLL TO TOP ======================
+    window.addEventListener('scroll', function() {
+        const scrollBtn = document.getElementById('scrollTop');
+        if (window.scrollY > 300) {
+            scrollBtn.style.display = 'flex';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+    });
+
+    document.getElementById('scrollTop').addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ====================== INIT ======================
+    document.addEventListener('DOMContentLoaded', function() {
+        loadStats();
+        setInterval(loadStats, 60000);
+    });
+</script>
+
+</body>
+</html>
