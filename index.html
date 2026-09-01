@@ -1312,6 +1312,23 @@
                 right: 20px;
             }
         }
+
+        /* ===== CUSTOM STYLE UNTUK PENJELASAN ===== */
+        .penjelasan-atasan {
+            background: rgba(31, 110, 140, 0.08);
+            border-left: 4px solid #1f6e8c;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin: 10px 0 16px 0;
+            font-style: italic;
+            color: #0b3b5c;
+            font-size: 0.95rem;
+        }
+        
+        /* Sembunyikan kode pernyataan */
+        .kode-pernyataan {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1618,25 +1635,44 @@
     let chartAtasanInstance = null;
 
     // ====================== DATA PESERTA & JABATAN ======================
+    // DATA PESERTA - Jabatan Saat Pelatihan (tetap seperti awal)
     const DATA_PESERTA = {
         'Dr. Giyatno, S.IP., M.Si.': {
-            jabatan: 'Kepala Dinas Peternakan dan Perikanan Kabupaten Ciamis'
+            jabatanPelatihan: 'Kepala Dinas Peternakan dan Perikanan Kabupaten Ciamis',
+            jabatanSekarang: 'Staf Ahli Bidang Perekonomian dan Pembangunan Pada Staf Ahli Sekretariat Daerah'
         },
         'Yayan Muhamad Supyan, AP., S.IP., M.M.': {
-            jabatan: 'Kepala Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ciamis'
+            jabatanPelatihan: 'Kepala Dinas Kependudukan dan Pencatatan Sipil Kabupaten Ciamis',
+            jabatanSekarang: 'Kepala Dinas Kependudukan dan Pencatatan Sipil'
         },
         'Heryan Rusyandi, S.Sos., M.M.': {
-            jabatan: 'Staf Ahli Bidang Perekonomian dan Pembangunan Kabupaten Ciamis'
+            jabatanPelatihan: 'Staf Ahli Bidang Perekonomian dan Pembangunan Kabupaten Ciamis',
+            jabatanSekarang: 'Kepala Dinas Pariwisata'
         },
         'Dase Fadlil Yusdy Mubarak, S.H.': {
-            jabatan: 'Staf Ahli Bidang Administrasi dan Sumber Daya Manusia Kabupaten Ciamis'
+            jabatanPelatihan: 'Staf Ahli Bidang Administrasi dan Sumber Daya Manusia Kabupaten Ciamis',
+            jabatanSekarang: 'Kepala Dinas Ketenagakerjaan'
         },
         'Eka Permana Oktaviana, S.T., M.A.P.': {
-            jabatan: 'Kepala Dinas Sosial Kabupaten Ciamis'
+            jabatanPelatihan: 'Kepala Dinas Sosial Kabupaten Ciamis',
+            jabatanSekarang: 'Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu'
         }
     };
 
     const DAFTAR_PESERTA = Object.keys(DATA_PESERTA);
+
+    // ====================== DATA ATASAN ======================
+    const DATA_ATASAN = {
+        'Dr. H. Herdiat Sunarya, M.M.': {
+            jabatan: 'Bupati',
+            instansi: 'Pemerintah Kabupaten Ciamis'
+        }
+    };
+
+    const DAFTAR_ATASAN = Object.keys(DATA_ATASAN);
+
+    // ====================== WAKTU PELATIHAN ======================
+    const WAKTU_PELATIHAN = '21 April - 28 Agustus 2025';
 
     // ====================== DAFTAR KODE PERNYATAAN ======================
     const KODE_PERNYATAAN = [
@@ -1672,85 +1708,191 @@
         pilihFormulir(jenis);
     }
 
-    // ====================== FUNGSI AUTO FILL JABATAN ======================
+    // ====================== FUNGSI AUTO FILL ======================
     function fillJabatanAlumni() {
         const nama = document.getElementById('namaAlumni')?.value;
-        const jabatanInput = document.getElementById('jabatanPel');
+        const jabatanPelInput = document.getElementById('jabatanPel');
+        const jabatanSkrgInput = document.getElementById('jabatanSkrg');
+        const instansiInput = document.getElementById('instansi');
+        const waktuInput = document.getElementById('waktu');
+        
         if (nama && DATA_PESERTA[nama]) {
-            jabatanInput.value = DATA_PESERTA[nama].jabatan;
+            // Jabatan Saat Pelatihan tetap sesuai data awal
+            jabatanPelInput.value = DATA_PESERTA[nama].jabatanPelatihan;
+            // Jabatan Saat Ini menggunakan data baru
+            jabatanSkrgInput.value = DATA_PESERTA[nama].jabatanSekarang;
+            // Set instansi otomatis
+            instansiInput.value = 'Pemerintah Kabupaten Ciamis';
+            instansiInput.setAttribute('readonly', 'readonly');
+            // Set waktu pelatihan otomatis
+            waktuInput.value = WAKTU_PELATIHAN;
+            waktuInput.setAttribute('readonly', 'readonly');
         } else {
-            jabatanInput.value = '';
+            jabatanPelInput.value = '';
+            jabatanSkrgInput.value = '';
+            instansiInput.value = '';
+            instansiInput.removeAttribute('readonly');
+            waktuInput.value = '';
+            waktuInput.removeAttribute('readonly');
         }
     }
 
     function fillJabatanAtasan() {
         const nama = document.getElementById('namaAlumniAtasan')?.value;
-        const jabatanInput = document.getElementById('jabatanPelAlumni');
+        const jabatanPelInput = document.getElementById('jabatanPelAlumni');
+        const jabatanSkrgInput = document.getElementById('jabatanSkrgAlumni');
+        const instansiInput = document.getElementById('instansiAlumni');
+        const waktuInput = document.getElementById('waktuAtasan');
+        
         if (nama && DATA_PESERTA[nama]) {
-            jabatanInput.value = DATA_PESERTA[nama].jabatan;
+            // Jabatan Saat Pelatihan tetap sesuai data awal
+            jabatanPelInput.value = DATA_PESERTA[nama].jabatanPelatihan;
+            // Jabatan Saat Ini menggunakan data baru
+            jabatanSkrgInput.value = DATA_PESERTA[nama].jabatanSekarang;
+            // Set instansi alumni otomatis
+            instansiInput.value = 'Pemerintah Kabupaten Ciamis';
+            instansiInput.setAttribute('readonly', 'readonly');
+            // Set waktu pelatihan otomatis
+            waktuInput.value = WAKTU_PELATIHAN;
+            waktuInput.setAttribute('readonly', 'readonly');
+        } else {
+            jabatanPelInput.value = '';
+            jabatanSkrgInput.value = '';
+            instansiInput.value = '';
+            instansiInput.removeAttribute('readonly');
+            waktuInput.value = '';
+            waktuInput.removeAttribute('readonly');
+        }
+    }
+
+    function fillDataAtasanResponden() {
+        const nama = document.getElementById('namaAtasan')?.value;
+        const jabatanInput = document.getElementById('jabatanAtasan');
+        const instansiInput = document.getElementById('instansiAtasan');
+        
+        if (nama && DATA_ATASAN[nama]) {
+            jabatanInput.value = DATA_ATASAN[nama].jabatan;
+            instansiInput.value = DATA_ATASAN[nama].instansi;
+            instansiInput.setAttribute('readonly', 'readonly');
         } else {
             jabatanInput.value = '';
+            instansiInput.value = '';
+            instansiInput.removeAttribute('readonly');
         }
     }
 
     // ====================== INDIKATOR (PKN Tingkat II) ======================
     const INDIKATOR = [
         // A. PERUBAHAN SIKAP PERILAKU - Mengelola Diri
-        { kode: 'A1', judul: 'PERUBAHAN SIKAP PERILAKU', sub: 'Mengelola Diri', items: [
-            'Mampu mempraktikkan pengelolaan energi dan potensi diri untuk memimpin perubahan strategis organisasi',
-            'Mempunyai potensi untuk mengikuti PKN I',
-            'Mampu mengantisipasi tantangan dan risiko penegakan integritas dalam penyelenggaraan pemerintahan yang bersih dan akuntabel',
-            'Menerapkan kerangka kebijakan pemerintahan yang bersih dan akuntabel'
-        ]},
+        { 
+            kode: 'A1', 
+            judul: 'PERUBAHAN SIKAP PERILAKU', 
+            sub: 'Mengelola Diri', 
+            penjelasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
+            items: [
+                'Mampu mempraktikkan pengelolaan energi dan potensi diri untuk memimpin perubahan strategis organisasi',
+                'Mempunyai potensi untuk mengikuti PKN I',
+                'Mampu mengantisipasi tantangan dan risiko penegakan integritas dalam penyelenggaraan pemerintahan yang bersih dan akuntabel',
+                'Menerapkan kerangka kebijakan pemerintahan yang bersih dan akuntabel'
+            ]
+        },
         // A. PERUBAHAN SIKAP PERILAKU - Kepemimpinan Strategis
-        { kode: 'A2', judul: 'PERUBAHAN SIKAP PERILAKU', sub: 'Kepemimpinan Strategis', items: [
-            'Mampu mengeksplorasi perkembangan teknologi digital dan implikasinya terhadap perbaikan kebijakan strategis organisasi',
-            'Mampu mengembangkan peran dan fungsi kepemimpinan di era digital',
-            'Mampu mengimplementasikan kepemimpinan kewirausahaan dan mengorganisir kepemimpinan kewirausahaan',
-            'Mampu membangun organisasi pembelajaran'
-        ]},
+        { 
+            kode: 'A2', 
+            judul: 'PERUBAHAN SIKAP PERILAKU', 
+            sub: 'Kepemimpinan Strategis', 
+            penjelasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
+            items: [
+                'Mampu mengeksplorasi perkembangan teknologi digital dan implikasinya terhadap perbaikan kebijakan strategis organisasi',
+                'Mampu mengembangkan peran dan fungsi kepemimpinan di era digital',
+                'Mampu mengimplementasikan kepemimpinan kewirausahaan dan mengorganisir kepemimpinan kewirausahaan',
+                'Mampu membangun organisasi pembelajaran'
+            ]
+        },
         // A. PERUBAHAN SIKAP PERILAKU - Manajemen Strategis
-        { kode: 'A3', judul: 'PERUBAHAN SIKAP PERILAKU', sub: 'Manajemen Strategis', items: [
-            'Mampu menerapkan manajemen strategis sektor publik',
-            'Mampu mempraktikkan teknik penyusunan rencana strategis pada instansi pemerintah',
-            'Memahami isu strategis tentang integritas kepemimpinan, kepemimpinan kewirausahaan dan kebijakan nasional',
-            'Mampu mengembangkan strategi marketing sektor publik yang efektif',
-            'Mampu mengembangkan kemitraan sektor publik atau privat'
-        ]},
+        { 
+            kode: 'A3', 
+            judul: 'PERUBAHAN SIKAP PERILAKU', 
+            sub: 'Manajemen Strategis', 
+            penjelasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
+            items: [
+                'Mampu menerapkan manajemen strategis sektor publik',
+                'Mampu mempraktikkan teknik penyusunan rencana strategis pada instansi pemerintah',
+                'Memahami isu strategis tentang integritas kepemimpinan, kepemimpinan kewirausahaan dan kebijakan nasional',
+                'Mampu mengembangkan strategi marketing sektor publik yang efektif',
+                'Mampu mengembangkan kemitraan sektor publik atau privat'
+            ]
+        },
         // B. DAMPAK PELATIHAN - Produktivitas
-        { kode: 'B1', judul: 'DAMPAK PELATIHAN', sub: 'Produktivitas', items: [
-            'Terdapat peningkatan produktivitas individu setelah mengikuti pelatihan',
-            'Dapat berkontribusi lebih dalam peningkatan kinerja organisasi'
-        ]},
+        { 
+            kode: 'B1', 
+            judul: 'DAMPAK PELATIHAN', 
+            sub: 'Produktivitas', 
+            penjelasan: 'Bagaimana penilaian Bapak terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II bagi staf Bapak dalam melaksanakan tugas dan jabatannya?',
+            items: [
+                'Terdapat peningkatan produktivitas individu setelah mengikuti pelatihan',
+                'Dapat berkontribusi lebih dalam peningkatan kinerja organisasi'
+            ]
+        },
         // B. DAMPAK PELATIHAN - Keberlanjutan Proyek Perubahan
-        { kode: 'B2', judul: 'DAMPAK PELATIHAN', sub: 'Keberlanjutan Proyek Perubahan', items: [
-            'Target proyek perubahan dalam jangka panjang tercapai',
-            'Seluruh tujuan proyek perubahan dapat tercapai',
-            'Keberhasilan kepemimpinan strategis',
-            'Manfaat proyek perubahan'
-        ]},
+        { 
+            kode: 'B2', 
+            judul: 'DAMPAK PELATIHAN', 
+            sub: 'Keberlanjutan Proyek Perubahan', 
+            penjelasan: 'Bagaimana penilaian Bapak terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II bagi staf Bapak dalam melaksanakan tugas dan jabatannya?',
+            items: [
+                'Target proyek perubahan dalam jangka panjang tercapai',
+                'Seluruh tujuan proyek perubahan dapat tercapai',
+                'Keberhasilan kepemimpinan strategis',
+                'Manfaat proyek perubahan'
+            ]
+        },
         // Faktor Pendukung
-        { kode: 'C1', judul: 'FAKTOR PENDUKUNG', sub: 'Dukungan Pelaksanaan Proyek Perubahan', items: [
-            'Terdapat dukungan dari Mentor',
-            'Terdapat dukungan Pemangku Kepentingan',
-            'Terdapat dukungan dari Anggota Tim',
-            'Terdapat dukungan Sarana dan Prasarana',
-            'Dijadikan kegiatan rutin dalam menunjang tugas dan fungsi'
-        ]},
+        { 
+            kode: 'C1', 
+            judul: 'FAKTOR PENDUKUNG', 
+            sub: 'Dukungan Pelaksanaan Proyek Perubahan', 
+            penjelasan: 'Menurut Bapak, bagaimana faktor berikut ini mendukung pelaksanaan proyek perubahan staf Bapak?',
+            items: [
+                'Terdapat dukungan dari Mentor',
+                'Terdapat dukungan Pemangku Kepentingan',
+                'Terdapat dukungan dari Anggota Tim',
+                'Terdapat dukungan Sarana dan Prasarana',
+                'Dijadikan kegiatan rutin dalam menunjang tugas dan fungsi'
+            ]
+        },
         // Faktor Pendukung Lainnya (isi teks)
-        { kode: 'C2', judul: 'FAKTOR PENDUKUNG', sub: 'Faktor Pendukung Lainnya', items: [
-            'Sebutkan faktor pendukung pelaksanaan proyek perubahan yang lain, jika ada!'
-        ]},
-        // Kendala/Hambatan
-        { kode: 'D1', judul: 'KENDALA / HAMBATAN', sub: 'Hambatan Pelaksanaan Proyek Perubahan', items: [
-            'Pekerjaan rutin menjadi kendala dalam pelaksanaan proyek perubahan',
-            'Kurangnya dukungan dari lingkungan unit kerja',
-            'Keterbatasan sumber daya menghambat pelaksanaan proyek perubahan'
-        ]},
+        { 
+            kode: 'C2', 
+            judul: 'FAKTOR PENDUKUNG', 
+            sub: 'Faktor Pendukung Lainnya', 
+            penjelasan: '',
+            items: [
+                'Sebutkan faktor pendukung pelaksanaan proyek perubahan yang lain, jika ada!'
+            ]
+        },
+        // Kendala/Hambatan - semua menggunakan radio button 1-4
+        { 
+            kode: 'D1', 
+            judul: 'KENDALA / HAMBATAN', 
+            sub: 'Hambatan Pelaksanaan Proyek Perubahan', 
+            penjelasan: 'Menurut Bapak, bagaimana kendala/hambatan yang dihadapi ketika staf Bapak melaksanakan proyek perubahan?',
+            items: [
+                'Pekerjaan rutin menjadi kendala dalam pelaksanaan proyek perubahan',
+                'Kurangnya dukungan dari lingkungan unit kerja',
+                'Keterbatasan sumber daya menghambat pelaksanaan proyek perubahan'
+            ]
+        },
         // Kendala Lainnya (isi teks)
-        { kode: 'D2', judul: 'KENDALA / HAMBATAN', sub: 'Kendala Lainnya', items: [
-            'Sebutkan kendala/hambatan lain yang dihadapi dalam pelaksanaan proyek perubahan, jika ada!'
-        ]}
+        { 
+            kode: 'D2', 
+            judul: 'KENDALA / HAMBATAN', 
+            sub: 'Kendala Lainnya', 
+            penjelasan: '',
+            items: [
+                'Sebutkan kendala/hambatan lain yang dihadapi dalam pelaksanaan proyek perubahan, jika ada!'
+            ]
+        }
     ];
 
     // ====================== FUNGSI UI ======================
@@ -1795,7 +1937,6 @@
             };
         } else {
             const namaAtasan = document.getElementById('namaAtasan')?.value;
-            const alamatAtasan = document.getElementById('alamatAtasan')?.value;
             const instansiAtasan = document.getElementById('instansiAtasan')?.value;
             const jabatanAtasan = document.getElementById('jabatanAtasan')?.value;
             const namaAlumni = document.getElementById('namaAlumniAtasan')?.value;
@@ -1804,13 +1945,12 @@
             const jabatanSkrgAlumni = document.getElementById('jabatanSkrgAlumni')?.value;
             const waktu = document.getElementById('waktuAtasan')?.value;
             
-            if (!namaAtasan || !alamatAtasan || !instansiAtasan || !jabatanAtasan || !namaAlumni || !instansiAlumni || !jabatanPelAlumni || !jabatanSkrgAlumni || !waktu) {
+            if (!namaAtasan || !instansiAtasan || !jabatanAtasan || !namaAlumni || !instansiAlumni || !jabatanPelAlumni || !jabatanSkrgAlumni || !waktu) {
                 alert('Lengkapi semua identitas.');
                 return;
             }
             FORM.data = {
                 namaAtasan: namaAtasan,
-                alamatAtasan: alamatAtasan,
                 instansiAtasan: instansiAtasan,
                 jabatanAtasan: jabatanAtasan,
                 namaAlumni: namaAlumni,
@@ -1842,16 +1982,24 @@
         }
         const g = INDIKATOR[idx];
         let html = `<div class="card"><h4 style="margin-top:0; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">${g.judul} <span style="font-weight:400; font-size:0.9rem; color:#1f6e8c;">— ${g.sub}</span></h4>`;
+        
+        // Tampilkan penjelasan jika ada dan jika role adalah atasan
+        if (g.penjelasan && FORM.jenis === 'atasan') {
+            html += `<div class="penjelasan-atasan"><i class="fas fa-info-circle" style="margin-right:8px; color:#1f6e8c;"></i>${g.penjelasan}</div>`;
+        }
+        
         g.items.forEach((item, i) => {
-            const kode = g.kode + '_' + (i+1);
-            const kodeFinal = kode.replace('_', '');
+            const kode = g.kode + (i+1);
+            const kodeFinal = kode;
             const val = FORM.jawaban[kodeFinal] || '';
 
-            if (item.toLowerCase().includes('sebutkan') || item.toLowerCase().includes('faktor pendukung') || item.toLowerCase().includes('kendala')) {
-                html += `<div style="margin:6px 0"><label style="font-weight:500;">${item} <span style="color:#1f6e8c; font-weight:400;">(Kode: ${kodeFinal})</span></label>
+            // Cek apakah item mengandung kata "sebutkan" atau "faktor pendukung" atau "kendala lain"
+            // Untuk D2 (kendala lainnya) tetap menggunakan input teks
+            if (item.toLowerCase().includes('sebutkan')) {
+                html += `<div style="margin:6px 0"><label style="font-weight:500;">${item}</label>
                     <input type="text" class="text-input" id="txt_${kodeFinal}" value="${val}" onchange="simpanJawaban('${kodeFinal}',this.value)" placeholder="Tulis jawaban..."></div>`;
             } else {
-                html += `<div class="grid-score"><span class="pernyataan">${item} <span style="color:#1f6e8c; font-weight:400; font-size:0.8rem;">(${kodeFinal})</span></span>
+                html += `<div class="grid-score"><span class="pernyataan">${item}</span>
                     ${[1,2,3,4].map(n => `<label><input type="radio" name="${kodeFinal}" value="${n}" ${val==n?'checked':''} onchange="simpanJawaban('${kodeFinal}','${n}')"> ${n}</label>`).join('')}
                 </div>`;
             }
@@ -2051,30 +2199,33 @@
             <div class="row">
                 <div class="form-group">
                     <label>Nama Instansi</label>
-                    <input id="instansi" placeholder="Nama Instansi">
+                    <input id="instansi" placeholder="Nama Instansi" readonly>
                 </div>
                 <div class="form-group">
                     <label>Jabatan Saat Pelatihan</label>
                     <input id="jabatanPel" readonly placeholder="Akan terisi otomatis">
                 </div>
             </div>
+            <div class="form-group">
+                <label>Jabatan Saat Ini</label>
+                <select id="jabatanSkrg" onchange="simpanJabatanSkrg(this.value)">
+                    <option value="">Pilih Jabatan Saat Ini</option>
+                    ${DAFTAR_PESERTA.map(n => `<option value="${DATA_PESERTA[n].jabatanSekarang}">${DATA_PESERTA[n].jabatanSekarang}</option>`).join('')}
+                </select>
+            </div>
             <div class="row">
                 <div class="form-group">
-                    <label>Jabatan Saat Ini</label>
-                    <input id="jabatanSkrg" placeholder="Jabatan saat ini (isi manual)">
+                    <label>Waktu Pelatihan</label>
+                    <input id="waktu" placeholder="Contoh: 21 April - 28 Agustus 2025" readonly>
                 </div>
                 <div class="form-group">
-                    <label>Waktu Pelatihan</label>
-                    <input id="waktu" placeholder="Contoh: 12 Februari - 2 Desember 2025">
+                    <label>Metode Pelaksanaan</label>
+                    <input id="metode" value="Blended Learning" readonly>
                 </div>
             </div>
             <div class="form-group">
                 <label>Pelatihan yang Diikuti</label>
                 <input id="pelatihan" value="Pelatihan Kepemimpinan Nasional Tingkat II" readonly>
-            </div>
-            <div class="form-group">
-                <label>Metode Pelaksanaan</label>
-                <input id="metode" value="Blended Learning" readonly>
             </div>
         `;
     }
@@ -2087,22 +2238,19 @@
             <div class="row">
                 <div class="form-group">
                     <label>Nama Responden (Atasan)</label>
-                    <input id="namaAtasan" placeholder="Nama lengkap atasan">
+                    <select id="namaAtasan" onchange="fillDataAtasanResponden()">
+                        <option value="">Pilih Nama</option>
+                        ${DAFTAR_ATASAN.map(n => `<option value="${n}">${n}</option>`).join('')}
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label>Alamat Responden</label>
-                    <input id="alamatAtasan" placeholder="Alamat lengkap">
-                </div>
-            </div>
-            <div class="row">
                 <div class="form-group">
                     <label>Nama Instansi</label>
-                    <input id="instansiAtasan" placeholder="Nama instansi">
+                    <input id="instansiAtasan" placeholder="Nama instansi" readonly>
                 </div>
-                <div class="form-group">
-                    <label>Jabatan Saat Ini</label>
-                    <input id="jabatanAtasan" placeholder="Jabatan saat ini">
-                </div>
+            </div>
+            <div class="form-group">
+                <label>Jabatan Saat Ini</label>
+                <input id="jabatanAtasan" readonly placeholder="Akan terisi otomatis">
             </div>
             <hr>
             <h4 style="color:#0b2a3b;">IDENTITAS ALUMNI PELATIHAN</h4>
@@ -2116,32 +2264,46 @@
             <div class="row">
                 <div class="form-group">
                     <label>Nama Instansi Alumni</label>
-                    <input id="instansiAlumni" placeholder="Nama instansi alumni">
+                    <input id="instansiAlumni" placeholder="Nama instansi alumni" readonly>
                 </div>
                 <div class="form-group">
                     <label>Jabatan Saat Pelatihan</label>
                     <input id="jabatanPelAlumni" readonly placeholder="Akan terisi otomatis">
                 </div>
             </div>
+            <div class="form-group">
+                <label>Jabatan Saat Ini Alumni</label>
+                <select id="jabatanSkrgAlumni" onchange="simpanJabatanSkrgAlumni(this.value)">
+                    <option value="">Pilih Jabatan Saat Ini</option>
+                    ${DAFTAR_PESERTA.map(n => `<option value="${DATA_PESERTA[n].jabatanSekarang}">${DATA_PESERTA[n].jabatanSekarang}</option>`).join('')}
+                </select>
+            </div>
             <div class="row">
                 <div class="form-group">
-                    <label>Jabatan Saat Ini Alumni</label>
-                    <input id="jabatanSkrgAlumni" placeholder="Jabatan saat ini (isi manual)">
+                    <label>Waktu Pelatihan</label>
+                    <input id="waktuAtasan" placeholder="Contoh: 21 April - 28 Agustus 2025" readonly>
                 </div>
                 <div class="form-group">
-                    <label>Waktu Pelatihan</label>
-                    <input id="waktuAtasan" placeholder="Contoh: 12 Februari - 2 Desember 2025">
+                    <label>Metode Pelaksanaan</label>
+                    <input id="metodeAtasan" value="Blended Learning" readonly>
                 </div>
             </div>
             <div class="form-group">
                 <label>Pelatihan yang Diikuti</label>
                 <input id="pelatihanAtasan" value="Pelatihan Kepemimpinan Nasional Tingkat II" readonly>
             </div>
-            <div class="form-group">
-                <label>Metode Pelaksanaan</label>
-                <input id="metodeAtasan" value="Blended Learning" readonly>
-            </div>
         `;
+    }
+
+    // ====================== FUNGSI UNTUK MENYIMPAN JABATAN ======================
+    function simpanJabatanSkrg(value) {
+        // Fungsi ini digunakan untuk menyimpan nilai jabatan saat ini yang dipilih
+        // Nilai akan tersimpan di FORM.data saat pengiriman
+    }
+
+    function simpanJabatanSkrgAlumni(value) {
+        // Fungsi ini digunakan untuk menyimpan nilai jabatan saat ini alumni yang dipilih
+        // Nilai akan tersimpan di FORM.data saat pengiriman
     }
 
     // ====================== SCROLL TO TOP ======================
