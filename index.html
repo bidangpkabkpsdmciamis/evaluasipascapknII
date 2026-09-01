@@ -367,39 +367,6 @@
             max-width: 100%;
         }
 
-        /* ===== EVENT TICKER ===== */
-        .event-ticker {
-            background: var(--gradient-primary);
-            padding: 18px 0;
-            color: white;
-        }
-
-        .event-ticker .ticker-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .ticker-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .ticker-item .date {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .ticker-item .title {
-            font-size: 0.85rem;
-            opacity: 0.9;
-        }
-
         /* ===== FOOTER ===== */
         .footer {
             background: var(--dark-blue);
@@ -693,6 +660,7 @@
 
         /* ===== FORM CONTAINER ===== */
         .form-container {
+            display: none;
             max-width: 880px;
             margin: 100px auto 40px;
             background: rgba(255, 255, 255, 0.85);
@@ -701,7 +669,8 @@
             box-shadow: 0 28px 56px -12px rgba(6, 33, 49, 0.35);
             padding: 36px 40px;
             border: 1px solid rgba(255, 255, 255, 0.4);
-            display: none;
+            position: relative;
+            z-index: 10;
         }
 
         .form-container.active {
@@ -1122,11 +1091,6 @@
                 grid-template-columns: 1fr 1fr;
             }
 
-            .event-ticker .ticker-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
             .footer-content {
                 grid-template-columns: 1fr 1fr;
             }
@@ -1296,14 +1260,6 @@
                 font-size: 0.75rem;
             }
 
-            .ticker-item {
-                flex-wrap: wrap;
-            }
-
-            .ticker-item .title {
-                font-size: 0.8rem;
-            }
-
             .scroll-top {
                 width: 40px;
                 height: 40px;
@@ -1329,6 +1285,11 @@
         .kode-pernyataan {
             display: none;
         }
+
+        /* ===== HIDE HERO WHEN FORM ACTIVE ===== */
+        .hero.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1341,8 +1302,8 @@
             <h1>BKPSDM <span>Ciamis</span></h1>
         </div>
         <ul class="nav-links" id="navLinks">
-            <li><a href="#hero">Beranda</a></li>
-            <li><a href="#form-section">Evaluasi</a></li>
+            <li><a href="#" onclick="showHome()">Beranda</a></li>
+            <li><a href="#" onclick="openModal()">Evaluasi</a></li>
             <li><a href="#footer">Kontak</a></li>
             <li><a href="#" class="btn-evaluasi" onclick="openModal()">PKN Tingkat II</a></li>
         </ul>
@@ -1417,34 +1378,19 @@
             </div>
         </div>
     </div>
-
-    <!-- Event Ticker -->
-    <div class="event-ticker">
-        <div class="container">
-            <div class="ticker-grid">
-                <div class="ticker-item">
-                    <span class="date">2025</span>
-                    <span class="title">PKN Tingkat II Angkatan 1</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="date">2025</span>
-                    <span class="title">PKN Tingkat II Angkatan 2</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="date">2025</span>
-                    <span class="title">PKN Tingkat II Angkatan 3</span>
-                </div>
-            </div>
-        </div>
-    </div>
 </section>
 
 <!-- ===== FORM CONTAINER ===== -->
 <div class="form-container" id="formSection">
-    <h2>
-        Evaluasi Pasca Pelatihan Kepemimpinan Nasional Tingkat II
-        <small>PKN II</small>
-    </h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h2>
+            Evaluasi Pasca Pelatihan Kepemimpinan Nasional Tingkat II
+            <small>PKN II</small>
+        </h2>
+        <button class="btn btn-outline" onclick="closeForm()" style="padding: 8px 16px; font-size: 0.85rem;">
+            <i class="fas fa-times"></i> Tutup
+        </button>
+    </div>
 
     <!-- STEP PILIH PERAN -->
     <div id="step-pilih" class="step active">
@@ -1562,9 +1508,9 @@
             <div class="footer-col footer-links">
                 <h4>Link Cepat</h4>
                 <ul>
-                    <li><a href="#hero"><i class="fas fa-home"></i> Beranda</a></li>
-                    <li><a href="#form-section"><i class="fas fa-file-alt"></i> Evaluasi</a></li>
-                    <li><a href="#chart-section"><i class="fas fa-chart-bar"></i> Statistik</a></li>
+                    <li><a href="#" onclick="showHome()"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="#" onclick="openModal()"><i class="fas fa-file-alt"></i> Evaluasi</a></li>
+                    <li><a href="#chart-section" onclick="showHome()"><i class="fas fa-chart-bar"></i> Statistik</a></li>
                     <li><a href="#footer"><i class="fas fa-envelope"></i> Kontak</a></li>
                 </ul>
             </div>
@@ -1633,9 +1579,9 @@
     let isSubmitting = false;
     let chartAlumniInstance = null;
     let chartAtasanInstance = null;
+    let isFormActive = false;
 
     // ====================== DATA PESERTA & JABATAN ======================
-    // DATA PESERTA - Jabatan Saat Pelatihan (tetap seperti awal)
     const DATA_PESERTA = {
         'Dr. Giyatno, S.IP., M.Si.': {
             jabatanPelatihan: 'Kepala Dinas Peternakan dan Perikanan Kabupaten Ciamis',
@@ -1674,17 +1620,118 @@
     // ====================== WAKTU PELATIHAN ======================
     const WAKTU_PELATIHAN = '21 April - 28 Agustus 2025';
 
-    // ====================== DAFTAR KODE PERNYATAAN ======================
-    const KODE_PERNYATAAN = [
-        'A11', 'A12', 'A13', 'A14',
-        'A21', 'A22', 'A23', 'A24',
-        'A31', 'A32', 'A33', 'A34', 'A35',
-        'B11', 'B12',
-        'B21', 'B22', 'B23', 'B24',
-        'C11', 'C12', 'C13', 'C14', 'C15',
-        'C21',
-        'D11', 'D12', 'D13',
-        'D21'
+    // ====================== INDIKATOR (PKN Tingkat II) ======================
+    const INDIKATOR = [
+        { 
+            kode: 'A1', 
+            judul: 'PERUBAHAN SIKAP PERILAKU', 
+            sub: 'Mengelola Diri',
+            penjelasanAlumni: 'Setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II, bagaimana Anda menilai sikap dan perilaku Anda di tempat kerja?',
+            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
+            items: [
+                'Mampu mempraktikkan pengelolaan energi dan potensi diri untuk memimpin perubahan strategis organisasi',
+                'Mempunyai potensi untuk mengikuti PKN I',
+                'Mampu mengantisipasi tantangan dan risiko penegakan integritas dalam penyelenggaraan pemerintahan yang bersih dan akuntabel',
+                'Menerapkan kerangka kebijakan pemerintahan yang bersih dan akuntabel'
+            ]
+        },
+        { 
+            kode: 'A2', 
+            judul: 'PERUBAHAN SIKAP PERILAKU', 
+            sub: 'Kepemimpinan Strategis',
+            penjelasanAlumni: 'Setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II, bagaimana Anda menilai sikap dan perilaku Anda di tempat kerja?',
+            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
+            items: [
+                'Mampu mengeksplorasi perkembangan teknologi digital dan implikasinya terhadap perbaikan kebijakan strategis organisasi',
+                'Mampu mengembangkan peran dan fungsi kepemimpinan di era digital',
+                'Mampu mengimplementasikan kepemimpinan kewirausahaan dan mengorganisir kepemimpinan kewirausahaan',
+                'Mampu membangun organisasi pembelajaran'
+            ]
+        },
+        { 
+            kode: 'A3', 
+            judul: 'PERUBAHAN SIKAP PERILAKU', 
+            sub: 'Manajemen Strategis',
+            penjelasanAlumni: 'Setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II, bagaimana Anda menilai sikap dan perilaku Anda di tempat kerja?',
+            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
+            items: [
+                'Mampu menerapkan manajemen strategis sektor publik',
+                'Mampu mempraktikkan teknik penyusunan rencana strategis pada instansi pemerintah',
+                'Memahami isu strategis tentang integritas kepemimpinan, kepemimpinan kewirausahaan dan kebijakan nasional',
+                'Mampu mengembangkan strategi marketing sektor publik yang efektif',
+                'Mampu mengembangkan kemitraan sektor publik atau privat'
+            ]
+        },
+        { 
+            kode: 'B1', 
+            judul: 'DAMPAK PELATIHAN', 
+            sub: 'Produktivitas',
+            penjelasanAlumni: 'Bagaimana penilaian Anda terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II dalam pelaksanaan tugas dan jabatan Anda?',
+            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II bagi staf Bapak dalam melaksanakan tugas dan jabatannya?',
+            items: [
+                'Terdapat peningkatan produktivitas individu setelah mengikuti pelatihan',
+                'Dapat berkontribusi lebih dalam peningkatan kinerja organisasi'
+            ]
+        },
+        { 
+            kode: 'B2', 
+            judul: 'DAMPAK PELATIHAN', 
+            sub: 'Keberlanjutan Proyek Perubahan',
+            penjelasanAlumni: 'Bagaimana penilaian Anda terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II dalam pelaksanaan tugas dan jabatan Anda?',
+            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II bagi staf Bapak dalam melaksanakan tugas dan jabatannya?',
+            items: [
+                'Target proyek perubahan dalam jangka panjang tercapai',
+                'Seluruh tujuan proyek perubahan dapat tercapai',
+                'Keberhasilan kepemimpinan strategis',
+                'Manfaat proyek perubahan'
+            ]
+        },
+        { 
+            kode: 'C1', 
+            judul: 'FAKTOR PENDUKUNG', 
+            sub: 'Dukungan Pelaksanaan Proyek Perubahan',
+            penjelasanAlumni: 'Menurut Anda, bagaimana faktor berikut mendukung pelaksanaan proyek perubahan Anda?',
+            penjelasanAtasan: 'Menurut Bapak, bagaimana faktor berikut ini mendukung pelaksanaan proyek perubahan staf Bapak?',
+            items: [
+                'Terdapat dukungan dari Mentor',
+                'Terdapat dukungan Pemangku Kepentingan',
+                'Terdapat dukungan dari Anggota Tim',
+                'Terdapat dukungan Sarana dan Prasarana',
+                'Dijadikan kegiatan rutin dalam menunjang tugas dan fungsi'
+            ]
+        },
+        { 
+            kode: 'C2', 
+            judul: 'FAKTOR PENDUKUNG', 
+            sub: 'Faktor Pendukung Lainnya',
+            penjelasanAlumni: '',
+            penjelasanAtasan: '',
+            items: [
+                'Sebutkan faktor pendukung pelaksanaan proyek perubahan yang lain, jika ada!'
+            ]
+        },
+        { 
+            kode: 'D1', 
+            judul: 'KENDALA / HAMBATAN', 
+            sub: 'Hambatan Pelaksanaan Proyek Perubahan',
+            penjelasanAlumni: 'Menurut Anda, bagaimana kendala/hambatan yang dihadapi ketika melaksanakan proyek perubahan?',
+            penjelasanAtasan: 'Menurut Bapak, bagaimana kendala/hambatan yang dihadapi ketika staf Bapak melaksanakan proyek perubahan?',
+            items: [
+                'Pekerjaan rutin menjadi kendala dalam pelaksanaan proyek perubahan',
+                'Kurangnya dukungan dari lingkungan unit kerja',
+                'Keterbatasan sumber daya menghambat pelaksanaan proyek perubahan'
+            ]
+        },
+        { 
+            kode: 'D2', 
+            judul: 'KENDALA / HAMBATAN', 
+            sub: 'Kendala Lainnya',
+            penjelasanAlumni: '',
+            penjelasanAtasan: '',
+            items: [
+                'Sebutkan kendala/hambatan lain yang dihadapi dalam pelaksanaan proyek perubahan, jika ada!'
+            ]
+        }
     ];
 
     // ====================== NAV TOGGLE ======================
@@ -1692,15 +1739,37 @@
         document.getElementById('navLinks').classList.toggle('active');
     }
 
+    // ====================== SHOW/HIDE HOME ======================
+    function showHome() {
+        document.getElementById('hero').classList.remove('hidden');
+        document.getElementById('formSection').classList.remove('active');
+        isFormActive = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showForm() {
+        document.getElementById('hero').classList.add('hidden');
+        document.getElementById('formSection').classList.add('active');
+        isFormActive = true;
+    }
+
+    function closeForm() {
+        showHome();
+        resetForm();
+    }
+
     // ====================== MODAL ======================
     function openModal() {
         document.getElementById('modalOverlay').classList.add('active');
-        document.getElementById('formSection').classList.add('active');
+        showForm();
         document.getElementById('formSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function closeModal() {
         document.getElementById('modalOverlay').classList.remove('active');
+        if (!isFormActive) {
+            showHome();
+        }
     }
 
     function selectRole(jenis) {
@@ -1717,14 +1786,10 @@
         const waktuInput = document.getElementById('waktu');
         
         if (nama && DATA_PESERTA[nama]) {
-            // Jabatan Saat Pelatihan tetap sesuai data awal
             jabatanPelInput.value = DATA_PESERTA[nama].jabatanPelatihan;
-            // Jabatan Saat Ini menggunakan data baru
             jabatanSkrgInput.value = DATA_PESERTA[nama].jabatanSekarang;
-            // Set instansi otomatis
             instansiInput.value = 'Pemerintah Kabupaten Ciamis';
             instansiInput.setAttribute('readonly', 'readonly');
-            // Set waktu pelatihan otomatis
             waktuInput.value = WAKTU_PELATIHAN;
             waktuInput.setAttribute('readonly', 'readonly');
         } else {
@@ -1745,14 +1810,10 @@
         const waktuInput = document.getElementById('waktuAtasan');
         
         if (nama && DATA_PESERTA[nama]) {
-            // Jabatan Saat Pelatihan tetap sesuai data awal
             jabatanPelInput.value = DATA_PESERTA[nama].jabatanPelatihan;
-            // Jabatan Saat Ini menggunakan data baru
             jabatanSkrgInput.value = DATA_PESERTA[nama].jabatanSekarang;
-            // Set instansi alumni otomatis
             instansiInput.value = 'Pemerintah Kabupaten Ciamis';
             instansiInput.setAttribute('readonly', 'readonly');
-            // Set waktu pelatihan otomatis
             waktuInput.value = WAKTU_PELATIHAN;
             waktuInput.setAttribute('readonly', 'readonly');
         } else {
@@ -1780,129 +1841,6 @@
             instansiInput.removeAttribute('readonly');
         }
     }
-
-    // ====================== INDIKATOR (PKN Tingkat II) ======================
-    const INDIKATOR = [
-        // A. PERUBAHAN SIKAP PERILAKU - Mengelola Diri
-        { 
-            kode: 'A1', 
-            judul: 'PERUBAHAN SIKAP PERILAKU', 
-            sub: 'Mengelola Diri',
-            penjelasanAlumni: 'Setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II, bagaimana Anda menilai sikap dan perilaku Anda di tempat kerja?',
-            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
-            items: [
-                'Mampu mempraktikkan pengelolaan energi dan potensi diri untuk memimpin perubahan strategis organisasi',
-                'Mempunyai potensi untuk mengikuti PKN I',
-                'Mampu mengantisipasi tantangan dan risiko penegakan integritas dalam penyelenggaraan pemerintahan yang bersih dan akuntabel',
-                'Menerapkan kerangka kebijakan pemerintahan yang bersih dan akuntabel'
-            ]
-        },
-        // A. PERUBAHAN SIKAP PERILAKU - Kepemimpinan Strategis
-        { 
-            kode: 'A2', 
-            judul: 'PERUBAHAN SIKAP PERILAKU', 
-            sub: 'Kepemimpinan Strategis',
-            penjelasanAlumni: 'Setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II, bagaimana Anda menilai sikap dan perilaku Anda di tempat kerja?',
-            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
-            items: [
-                'Mampu mengeksplorasi perkembangan teknologi digital dan implikasinya terhadap perbaikan kebijakan strategis organisasi',
-                'Mampu mengembangkan peran dan fungsi kepemimpinan di era digital',
-                'Mampu mengimplementasikan kepemimpinan kewirausahaan dan mengorganisir kepemimpinan kewirausahaan',
-                'Mampu membangun organisasi pembelajaran'
-            ]
-        },
-        // A. PERUBAHAN SIKAP PERILAKU - Manajemen Strategis
-        { 
-            kode: 'A3', 
-            judul: 'PERUBAHAN SIKAP PERILAKU', 
-            sub: 'Manajemen Strategis',
-            penjelasanAlumni: 'Setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II, bagaimana Anda menilai sikap dan perilaku Anda di tempat kerja?',
-            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap sikap perilaku staf Bapak di tempat kerja setelah mengikuti Pelatihan Kepemimpinan Nasional Tingkat II?',
-            items: [
-                'Mampu menerapkan manajemen strategis sektor publik',
-                'Mampu mempraktikkan teknik penyusunan rencana strategis pada instansi pemerintah',
-                'Memahami isu strategis tentang integritas kepemimpinan, kepemimpinan kewirausahaan dan kebijakan nasional',
-                'Mampu mengembangkan strategi marketing sektor publik yang efektif',
-                'Mampu mengembangkan kemitraan sektor publik atau privat'
-            ]
-        },
-        // B. DAMPAK PELATIHAN - Produktivitas
-        { 
-            kode: 'B1', 
-            judul: 'DAMPAK PELATIHAN', 
-            sub: 'Produktivitas',
-            penjelasanAlumni: 'Bagaimana penilaian Anda terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II dalam pelaksanaan tugas dan jabatan Anda?',
-            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II bagi staf Bapak dalam melaksanakan tugas dan jabatannya?',
-            items: [
-                'Terdapat peningkatan produktivitas individu setelah mengikuti pelatihan',
-                'Dapat berkontribusi lebih dalam peningkatan kinerja organisasi'
-            ]
-        },
-        // B. DAMPAK PELATIHAN - Keberlanjutan Proyek Perubahan
-        { 
-            kode: 'B2', 
-            judul: 'DAMPAK PELATIHAN', 
-            sub: 'Keberlanjutan Proyek Perubahan',
-            penjelasanAlumni: 'Bagaimana penilaian Anda terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II dalam pelaksanaan tugas dan jabatan Anda?',
-            penjelasanAtasan: 'Bagaimana penilaian Bapak terhadap dampak dari Pelatihan Kepemimpinan Nasional Tingkat II bagi staf Bapak dalam melaksanakan tugas dan jabatannya?',
-            items: [
-                'Target proyek perubahan dalam jangka panjang tercapai',
-                'Seluruh tujuan proyek perubahan dapat tercapai',
-                'Keberhasilan kepemimpinan strategis',
-                'Manfaat proyek perubahan'
-            ]
-        },
-        // Faktor Pendukung - Dukungan Pelaksanaan Proyek Perubahan
-        { 
-            kode: 'C1', 
-            judul: 'FAKTOR PENDUKUNG', 
-            sub: 'Dukungan Pelaksanaan Proyek Perubahan',
-            penjelasanAlumni: 'Menurut Anda, bagaimana faktor berikut mendukung pelaksanaan proyek perubahan Anda?',
-            penjelasanAtasan: 'Menurut Bapak, bagaimana faktor berikut ini mendukung pelaksanaan proyek perubahan staf Bapak?',
-            items: [
-                'Terdapat dukungan dari Mentor',
-                'Terdapat dukungan Pemangku Kepentingan',
-                'Terdapat dukungan dari Anggota Tim',
-                'Terdapat dukungan Sarana dan Prasarana',
-                'Dijadikan kegiatan rutin dalam menunjang tugas dan fungsi'
-            ]
-        },
-        // Faktor Pendukung Lainnya (isi teks)
-        { 
-            kode: 'C2', 
-            judul: 'FAKTOR PENDUKUNG', 
-            sub: 'Faktor Pendukung Lainnya',
-            penjelasanAlumni: '',
-            penjelasanAtasan: '',
-            items: [
-                'Sebutkan faktor pendukung pelaksanaan proyek perubahan yang lain, jika ada!'
-            ]
-        },
-        // Kendala/Hambatan - semua menggunakan radio button 1-4
-        { 
-            kode: 'D1', 
-            judul: 'KENDALA / HAMBATAN', 
-            sub: 'Hambatan Pelaksanaan Proyek Perubahan',
-            penjelasanAlumni: 'Menurut Anda, bagaimana kendala/hambatan yang dihadapi ketika melaksanakan proyek perubahan?',
-            penjelasanAtasan: 'Menurut Bapak, bagaimana kendala/hambatan yang dihadapi ketika staf Bapak melaksanakan proyek perubahan?',
-            items: [
-                'Pekerjaan rutin menjadi kendala dalam pelaksanaan proyek perubahan',
-                'Kurangnya dukungan dari lingkungan unit kerja',
-                'Keterbatasan sumber daya menghambat pelaksanaan proyek perubahan'
-            ]
-        },
-        // Kendala Lainnya (isi teks)
-        { 
-            kode: 'D2', 
-            judul: 'KENDALA / HAMBATAN', 
-            sub: 'Kendala Lainnya',
-            penjelasanAlumni: '',
-            penjelasanAtasan: '',
-            items: [
-                'Sebutkan kendala/hambatan lain yang dihadapi dalam pelaksanaan proyek perubahan, jika ada!'
-            ]
-        }
-    ];
 
     // ====================== FUNGSI UI ======================
     function showStep(id) {
@@ -1990,7 +1928,6 @@
         const g = INDIKATOR[idx];
         let html = `<div class="card"><h4 style="margin-top:0; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">${g.judul} <span style="font-weight:400; font-size:0.9rem; color:#1f6e8c;">— ${g.sub}</span></h4>`;
         
-        // Tampilkan penjelasan berdasarkan role
         if (FORM.jenis === 'alumni' && g.penjelasanAlumni) {
             html += `<div class="penjelasan"><i class="fas fa-info-circle" style="margin-right:8px; color:#1f6e8c;"></i>${g.penjelasanAlumni}</div>`;
         } else if (FORM.jenis === 'atasan' && g.penjelasanAtasan) {
@@ -2002,7 +1939,6 @@
             const kodeFinal = kode;
             const val = FORM.jawaban[kodeFinal] || '';
 
-            // Cek apakah item mengandung kata "sebutkan"
             if (item.toLowerCase().includes('sebutkan')) {
                 html += `<div style="margin:6px 0"><label style="font-weight:500;">${item}</label>
                     <input type="text" class="text-input" id="txt_${kodeFinal}" value="${val}" onchange="simpanJawaban('${kodeFinal}',this.value)" placeholder="Tulis jawaban..."></div>`;
@@ -2064,6 +2000,8 @@
         FORM.indikatorIndex = 0;
         document.getElementById('formSection').classList.remove('active');
         showStep('step-pilih');
+        document.getElementById('hero').classList.remove('hidden');
+        isFormActive = false;
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -2298,15 +2236,8 @@
     }
 
     // ====================== FUNGSI UNTUK MENYIMPAN JABATAN ======================
-    function simpanJabatanSkrg(value) {
-        // Fungsi ini digunakan untuk menyimpan nilai jabatan saat ini yang dipilih
-        // Nilai akan tersimpan di FORM.data saat pengiriman
-    }
-
-    function simpanJabatanSkrgAlumni(value) {
-        // Fungsi ini digunakan untuk menyimpan nilai jabatan saat ini alumni yang dipilih
-        // Nilai akan tersimpan di FORM.data saat pengiriman
-    }
+    function simpanJabatanSkrg(value) {}
+    function simpanJabatanSkrgAlumni(value) {}
 
     // ====================== SCROLL TO TOP ======================
     window.addEventListener('scroll', function() {
